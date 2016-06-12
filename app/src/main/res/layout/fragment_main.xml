@@ -1,0 +1,185 @@
+<FrameLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <io.github.francoiscampbell.circlelayout.CircleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                          xmlns:cl="http://schemas.android.com/apk/res-auto"
+                                                          android:layout_width="match_parent"
+                                                          android:layout_height="match_parent"
+                                                          android:paddingBottom="@dimen/circle_vertical_margin"
+                                                          android:paddingLeft="@dimen/circle_horizontal_margin"
+                                                          android:paddingRight="@dimen/circle_horizontal_margin"
+                                                          android:paddingTop="@dimen/circle_vertical_margin"
+                                                          cl:cl_angleOffset="90"
+                                                          cl:cl_direction="clockwise"
+                                                          cl:cl_centerView="@+id/centerLayout"
+                                                          android:duplicateParentState="true">
+
+        <FrameLayout
+                android:layout_height="300dp"
+                android:layout_width="300dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:id="@+id/centerLayout"
+                android:duplicateParentState="true"
+                xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:src="@drawable/circle_bg"
+                    android:padding="15dp"
+                    android:alpha="100"/>
+
+            <ImageView
+                    android:id="@+id/centerView"
+                    android:layout_width="@dimen/button_size"
+                    android:layout_height="@dimen/button_size"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/test_textsize"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:src="@drawable/ic_open_with_white_24dp"
+                    android:background="@drawable/circle_button"
+                    android:padding="15dp"
+                    android:alpha="100"/>
+        </FrameLayout>
+
+        <TextView
+                android:id="@+id/a_button"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:text="Fun"
+                android:textColor="@color/buttonText"
+                android:textSize="@dimen/test_textsize"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:background="@drawable/circle_button"/>
+
+        <TextView
+                android:id="@+id/b_button"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:text="Happy"
+                android:textColor="@color/buttonText"
+                android:textSize="@dimen/test_textsize"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:background="@drawable/circle_button"/>
+
+        <TextView
+                android:id="@+id/c_button"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:text="Angry"
+                android:textColor="@color/buttonText"
+                android:textSize="@dimen/test_textsize"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:background="@drawable/circle_button"
+                android:duplicateParentState="true"/>
+
+        <TextView
+                android:id="@+id/d_button"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:text="Sad"
+                android:textColor="@color/buttonText"
+                android:textSize="@dimen/test_textsize"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:background="@drawable/circle_button"/>
+
+        <TextView
+                android:id="@+id/e_button"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:text="Fight"
+                android:textColor="@color/buttonText"
+                android:textSize="@dimen/test_textsize"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:background="@drawable/circle_button"/>
+
+        <TextView
+                android:id="@+id/f_button"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:text="Question"
+                android:textColor="@color/buttonText"
+                android:textSize="@dimen/test_textsize"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:background="@drawable/circle_button"/>
+
+
+    </io.github.francoiscampbell.circlelayout.CircleLayout>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal|top"
+            android:gravity="center">
+        <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center_horizontal|top"-->
+        <!--android:gravity="center">-->
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Partner View :"
+                android:textAlignment="center"
+                android:gravity="center"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sendimageview"
+                android:src="@android:drawable/ic_dialog_info"
+                android:adjustViewBounds="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center_horizontal|top"-->
+        <!--android:gravity="center">-->
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selected :"
+                android:textAlignment="center"
+                android:gravity="center"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/avaterimageview"
+                android:src="@android:drawable/ic_dialog_info"
+                android:adjustViewBounds="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
+        <!--</LinearLayout>-->
+    </LinearLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="シェイク：手を振る\n中心：通常のアバターを表示\n"
+            android:textAlignment="center"
+            android:gravity="bottom"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/circle_horizontal_margin"/>
+
+</FrameLayout>
