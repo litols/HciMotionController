@@ -263,34 +263,25 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
     //ViewGroupに対するonTouchリスナ(重なってるかを調べて処理を行う）
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        int viewid = view.getId();
         //ステータスバーを含まないRawスクリーン座標系で考える
         int x = (int) motionEvent.getRawX();
         int y = (int) motionEvent.getRawY();
 
-        View v;
-
-
-        if (MotionEvent.ACTION_MOVE == motionEvent.getAction()) {
-            // Log.d("ACTION_MOVE", "onTouch: ");
-            //座標の更新
-            touchX = x;
-            touchY = y;
-        }
-
         //ホバー状態のチェック
         switch (motionEvent.getAction()) {
-            // case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
+                //座標の更新
+                touchX = x;
+                touchY = y;
                 touchMoveAction(touchX, touchY);
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.d("hco", "onTouch: actionup");
+                touchUpAction(touchX, touchY);
+                break;
             default:
         }
 
-        //ボタン位置の確定
-        if (MotionEvent.ACTION_UP == motionEvent.getAction()) {
-            Log.d("hco", "onTouch: actionup");
-            touchUpAction(touchX, touchY);
-        }
         return true;
     }
 
@@ -317,31 +308,27 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
     }
 
     private void hoverAction(int hoverViewId) {
-        //色の変更
-
-        //一回目のhoverなら
-        //if(mHoverState[hoverViewId]==false){
-        //}
-
-        //ほかにhover状態だったやつがある場合
+        //ほかにhover状態だったものがある場合
         for (int i = 0; i < mHoverState.length; i++) {
 
             if (i != hoverViewId) {
                 //元に戻すアクション
                 mButtons[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_button));
-//                mHoverState[i]=false;
             }
-            //mPrevHoverState[i]=mHoverState[i];
         }
+
+        //ホバーの当該Viewの色を塗り直す
         mButtons[hoverViewId].setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_button_hover));
+        //アバタを当該ボタンのアバタに切り替える
         mAvaterImageView.setImageDrawable(getResources().getDrawable(AVATER_RES[hoverViewId]));
-        // mHoverState[hoverViewId]=true;
 
     }
 
     private void unhoverAction() {
+        //通常状態に塗り直す
         for (int i = 0; i < mButtons.length; i++)
             mButtons[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_button));
+        //アバタも初期状態に戻す
         mAvaterImageView.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_dialog_info));
     }
 
@@ -358,9 +345,7 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
     private void touchUpAction(int touchX, int touchY) {
         for (int i = 0; i < mButtons.length; i++) {
             if (isHover(mButtons[i], touchX, touchY)) {
-                Log.d(TAG, "onTouch: lis:unhoveraction");
-//                TextView vv = (TextView)mButtons[i];
-//                Log.d("hci", "onTouch actionup: view is "+ vv.getText());
+                Log.d(TAG, "onTouch: touchUpAction");
                 sendCommand(loadServerAddress(getContext()), loadServerPort(getContext()), String.valueOf(SEND_CHARACTER[i]), i);
                 Snackbar.make(getActivity().getWindow().getDecorView(), "Command sent. " + SEND_CHARACTER[i], Snackbar.LENGTH_SHORT)
                         .show();
@@ -400,9 +385,6 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
                         ds = new DatagramSocket();  //DatagramSocket 作成
                     }
                     byte[] data = params[2].getBytes();
-//                    byte[] sdata = new byte[4];
-//                    sdata[0]=data[0];
-//                    sdata[1]=sdata[2]=sdata[3]=(byte)204;
                     DatagramPacket dp = new DatagramPacket(data, data.length, host, Integer.parseInt(params[1]));  //DatagramPacket 作成
                     ds.send(dp);
                     Log.d("Send", "send finished." + params[2]);
