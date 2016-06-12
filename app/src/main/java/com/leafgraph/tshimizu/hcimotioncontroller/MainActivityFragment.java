@@ -26,14 +26,18 @@ import java.net.InetAddress;
 public class MainActivityFragment extends Fragment implements View.OnTouchListener {
 
     String TAG = "MainActivityFrag";
+    //ボタンのViewの保持
     View[] mButtons;
+    //
     boolean[] mHoverState;
     boolean[] mPrevHoverState;
 
     ImageView mAvaterImageView;
     ImageView mSendImageView;
 
+    //送信するコマンドとボタンの対応
     public static final char[] SEND_CHARACTER = {'s', 'a', 'b', 'c', 'd', 'e', 'f', 'g'};
+    //R.drawableを配列にする
     final int[] AVATER_RES = {
             R.drawable.avatar0,
             R.drawable.avatara,
@@ -44,7 +48,10 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
             R.drawable.avatarf,
             R.drawable.avatarg,
     };
+    //デフォルトのアバタ
     final int DEFAULT_AVATER_DRAWABLE = R.drawable.avatar0;
+
+    //ボタンのID
     public static final int BUTTON_CENTER = 0;
     public static final int BUTTON_A = 1;
     public static final int BUTTON_B = 2;
@@ -54,6 +61,7 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
     public static final int BUTTON_F = 6;
     public static final int BUTTON_SWING = 7;
 
+    //ボタンの数
     public static final int BUTTONS_SIZE = 7;
 
     private DatagramSocket ds;
@@ -94,6 +102,7 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
         mAvaterImageView = (ImageView) (v.findViewById(R.id.avaterimageview));
         mSendImageView = (ImageView) (v.findViewById(R.id.sendimageview));
 
+        //タッチイベント群
         mButtons[BUTTON_CENTER].setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -286,6 +295,14 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
     }
 
 
+    /**
+     * 矩形を描いてx,yが(View v)上にあるかどうかをチェック
+     *
+     * @param v 　対象View
+     * @param x 　Raw座標
+     * @param y 　Raw座標
+     * @return
+     */
     private boolean isHover(View v, int x, int y) {
         Rect outRect = new Rect();
         v.getDrawingRect(outRect);
@@ -307,6 +324,10 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
         return false;
     }
 
+    /**
+     * ホバー時のViewの描画
+     * @param hoverViewId
+     */
     private void hoverAction(int hoverViewId) {
         //ほかにhover状態だったものがある場合
         for (int i = 0; i < mHoverState.length; i++) {
@@ -324,6 +345,9 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
 
     }
 
+    /**
+     * ホバー解除時のViewの描画
+     */
     private void unhoverAction() {
         //通常状態に塗り直す
         for (int i = 0; i < mButtons.length; i++)
@@ -332,6 +356,11 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
         mAvaterImageView.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_dialog_info));
     }
 
+    /**
+     * ACTION_MOVE時の処理
+     * @param touchX Raw座標
+     * @param touchY Raw座標
+     */
     private void touchMoveAction(int touchX, int touchY) {
         unhoverAction();
         for (int i = 0; i < mButtons.length; i++) {
@@ -342,6 +371,11 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
         }
     }
 
+    /**
+     * ACTION_UP時の処理
+     * @param touchX Raw座標
+     * @param touchY　Raw座標
+     */
     private void touchUpAction(int touchX, int touchY) {
         for (int i = 0; i < mButtons.length; i++) {
             if (isHover(mButtons[i], touchX, touchY)) {
@@ -356,24 +390,14 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
         unhoverAction();
     }
 
+    /**
+     * コマンドの送信
+     * @param ip　IPアドレス
+     * @param port ポート番号
+     * @param mes　メッセージ
+     * @param drawableId　送信するアバタのID
+     */
     public void sendCommand(String ip, String port, String mes, int drawableId) {
-
-        /*
-        * AsyncTask<型1, 型2,型3>
-        *
-        *   型1 … Activityからスレッド処理へ渡したい変数の型
-        *          ※ Activityから呼び出すexecute()の引数の型
-        *          ※ doInBackground()の引数の型
-        *
-        *   型2 … 進捗度合を表示する時に利用したい型
-        *          ※ onProgressUpdate()の引数の型
-        *
-        *   型3 … バックグラウンド処理完了時に受け取る型
-        *          ※ doInBackground()の戻り値の型
-        *          ※ onPostExecute()の引数の型
-        *
-        *   ※ それぞれ不要な場合は、Voidを設定すれば良い
-        */
         new AsyncTask<String, Void, Void>() {
 
             @Override
@@ -394,14 +418,25 @@ public class MainActivityFragment extends Fragment implements View.OnTouchListen
                 return null;
             }
         }.execute(ip, port, mes);
+        //送信したアバタを表示
         mSendImageView.setImageDrawable(getResources().getDrawable(AVATER_RES[drawableId]));
     }
 
+    /**
+     * サーバアドレスをPreferenceから取得
+     * @param context
+     * @return
+     */
     public String loadServerAddress(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getString("server_address", "");
     }
 
+    /**
+     * サーバポートをPreferenceから取得
+     * @param context
+     * @return
+     */
     public String loadServerPort(Context context) {
         // アプリ標準の Preferences を取得する
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);

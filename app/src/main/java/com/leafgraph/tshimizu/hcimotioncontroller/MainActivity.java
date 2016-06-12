@@ -27,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
     boolean mHandSwingFlag = true;
 
+    /**
+     * onCreate Activityの作成
+     * シェイクジェスチャの認識リスナの作成
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,27 +51,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * シェイクジェスチャのリスナ設定
+         * シェイクが実施されたらバイブレーションとコマンドの送信、アバタの反映を行う
+         */
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mShakeDetector = new ShakeDetector(new ShakeDetector.Listener() {
             @Override
             public void hearShake() {
+                //SnackBarの表示
                 Snackbar.make(getWindow().getDecorView(), "Detected Gesture! : " + "Shake!Shake!", Snackbar.LENGTH_SHORT)
                         .show();
+                //バイブレーション実施
                 Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                 vibrator.vibrate(80);
+                //コマンド送信
                 mFragment.sendCommand(mFragment.loadServerAddress(mContext), mFragment.loadServerPort(mContext),
                         String.valueOf(MainActivityFragment.SEND_CHARACTER[MainActivityFragment.BUTTON_SWING]), 0);
 
+                //リソースの切り替え
                 if (mHandSwingFlag) {
+                    //送信したアバタの表示
                     ((ImageView) findViewById(R.id.sendimageview)).setImageDrawable(getResources().getDrawable(R.drawable.avatarg));
                     mHandSwingFlag = false;
                 } else {
+                    //送信したアバタの表示
                     ((ImageView) findViewById(R.id.sendimageview)).setImageDrawable(getResources().getDrawable(R.drawable.avatarh));
                     mHandSwingFlag = true;
                 }
 
             }
         });
+
+        //シェイクジェスチャ認識開始
         mShakeDetector.start(sensorManager);
 
     }
@@ -94,19 +112,31 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * onResume()
+     * アクティビティの復帰時
+     */
     @Override
     protected void onResume() {
         super.onResume();
+        //シェイクジェスチャ認識再スタート
         mShakeDetector.start((SensorManager) getSystemService(SENSOR_SERVICE));
     }
 
+    /**
+     * onPause()
+     * ユーザがアプリから離れたとき
+     */
     @Override
     protected void onPause() {
         super.onPause();
+        //シェイクジェスチャの認識ストップ
         mShakeDetector.stop();
     }
 
+    //チュートリアルの作成
     private void runTutorial() {
+        //チュートリアルが再実行できるようにする
         MaterialShowcaseView.resetSingleUse(this, "Tutorial SEQ");
         //チュートリアル
         ShowcaseConfig config = new ShowcaseConfig();
